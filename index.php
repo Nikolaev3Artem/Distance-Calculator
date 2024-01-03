@@ -18,57 +18,56 @@
   }
 
   function map_calculator($from, $to) {    
-    $from = str_replace( array(' '), '', $from);
-    $to = str_replace( array(' '), '', $to);
+    $from = str_replace( array(' '), '%20', $from);
+    $to = str_replace( array(' '), '%20', $to);
+    // $from_locality = "";
+    // $from_region = "";
+    // $from_country = "";
+    // $from_data = [$from_locality, $from_region, $from_country];
+    // $k = 0;
+    // $commas_from_count = 0;
+    // for($j = 0; $j <= strlen($from);$j++){
+    //   if($from[$i] == ","){
+    //     $commas_from_count += 1;
+    //   }
+    // }
+    // for($j = 0; $j <= strlen($to);$j++){
+    //   if($to[$i] == ","){
+    //     $commas_to_count += 1;
+    //   }
+    // }
+    // if($commas_from_count > 0){
+    //   for($i = 0; $i <= strlen($from);$i++){
+    //     if($from[$i] == ","){
+    //       $from_data[$k];
+    //       $k += 1;
+    //     }
+    //     $from_data[$k] .= $from[$i];
+    //   }
+    // }
 
-    $from_locality = "";
-    $from_region = "";
-    $from_country = "";
-    $from_data = [$from_locality, $from_region, $from_country];
-    $k = 0;
-    $commas_from_count = 0;
-    for($j = 0; $j <= strlen($from);$j++){
-      if($from[$i] == ","){
-        $commas_from_count += 1;
-      }
-    }
-    for($j = 0; $j <= strlen($to);$j++){
-      if($to[$i] == ","){
-        $commas_to_count += 1;
-      }
-    }
-    if($commas_from_count > 0){
-      for($i = 0; $i <= strlen($from);$i++){
-        if($from[$i] == ","){
-          $from_data[$k];
-          $k += 1;
-        }
-        $from_data[$k] .= $from[$i];
-      }
-    }
-
-    $to_locality = "";
-    $to_region = "";
-    $to_country = "";
-    $to_data = [$to_locality, $to_region, $to_country];
-    $k = 0;
-    if($commas_to_count > 0){
-      for($i = 0; $i <= strlen($to);$i++){
-        if($to[$i] == ","){
-          $to_data[$k];
-          $k += 1;
-        }
-        $to_data[$k] .= $to[$i];
-      }
-    }
+    // $to_locality = "";
+    // $to_region = "";
+    // $to_country = "";
+    // $to_data = [$to_locality, $to_region, $to_country];
+    // $k = 0;
+    // if($commas_to_count > 0){
+    //   for($i = 0; $i <= strlen($to);$i++){
+    //     if($to[$i] == ","){
+    //       $to_data[$k];
+    //       $k += 1;
+    //     }
+    //     $to_data[$k] .= $to[$i];
+    //   }
+    // }
 
     // print_r($from_data[0] . '|' . $from_data[1] . '|' . $from_data[2]);
-    if($commas_from_count > 0){
-      $from_coords_url = 'https://api.openrouteservice.org/geocode/search/structured?api_key=5b3ce3597851110001cf6248a1d91314224a42598022ddf99014c333&locality=' . $from_data[0] . '&region=' . $from_data[1] . '&country=' . $from_data[2];
-    }
-    else{
-      $from_coords_url = 'https://api.openrouteservice.org/geocode/search?api_key=5b3ce3597851110001cf6248a1d91314224a42598022ddf99014c333&text=' . $from;
-    }
+    // if($commas_from_count > 0){
+    //   $from_coords_url = 'https://api.openrouteservice.org/geocode/search/structured?api_key=5b3ce3597851110001cf6248a1d91314224a42598022ddf99014c333&locality=' . $from_data[0] . '&region=' . $from_data[1] . '&country=' . $from_data[2] . '&layers=locality&size=1';
+    // }
+    // else{
+      $from_coords_url = 'https://api.openrouteservice.org/geocode/search/structured?api_key=5b3ce3597851110001cf6248a1d91314224a42598022ddf99014c333&locality=' . $from . '&size=1';
+    // }
     $from_coords_curl = curl_init($from_coords_url); 
     curl_setopt($from_coords_curl, CURLOPT_RETURNTRANSFER, true);
     $from_coords_response = curl_exec($from_coords_curl); 
@@ -76,19 +75,18 @@
     $from_coords_response = json_decode($from_coords_response, true);
     $from_coords = [$from_coords_response['features'][0]['geometry']['coordinates'][1],$from_coords_response['features'][0]['geometry']['coordinates'][0]];
     
-    if($commas_to_count > 0){
-      $to_coords_url = 'https://api.openrouteservice.org/geocode/search/structured?api_key=5b3ce3597851110001cf6248a1d91314224a42598022ddf99014c333&locality=' . $to_data[0] . '&region=' . $to_data[1] . '&country=' . $to_data[2];
-    }
-    else{
-      $to_coords_url = 'https://api.openrouteservice.org/geocode/search?api_key=5b3ce3597851110001cf6248a1d91314224a42598022ddf99014c333&text=' . $to;
-    }
+    // if($commas_to_count > 0){
+    //   $to_coords_url = 'https://api.openrouteservice.org/geocode/search/structured?api_key=5b3ce3597851110001cf6248a1d91314224a42598022ddf99014c333&locality=' . $to_data[0] . '&region=' . $to_data[1] . '&country=' . $to_data[2] . '&layers=locality&size=1';
+    // }
+    // else{           
+      $to_coords_url = 'https://api.openrouteservice.org/geocode/search/structured?api_key=5b3ce3597851110001cf6248a1d91314224a42598022ddf99014c333&locality=' . $to . '&size=1';
+    // }
     $to_coords_curl = curl_init($to_coords_url); 
     curl_setopt($to_coords_curl, CURLOPT_RETURNTRANSFER, true);
     $to_coords_response = curl_exec($to_coords_curl); 
     curl_close($to_coords_curl);
     $to_coords_response = json_decode($to_coords_response, true);
     $to_coords = [$to_coords_response['features'][0]['geometry']['coordinates'][1],$to_coords_response['features'][0]['geometry']['coordinates'][0]];
-    
     $km_distance = distance($from_coords[0],$from_coords[1],$to_coords[0],$to_coords[1], "K");
     $km_distance = number_format($km_distance , 0);
     $km_distance = str_replace( array(' ',','), '', $km_distance);
@@ -182,9 +180,11 @@
               $to_coords = $coords[1];
               $km_distance = $coords[2];
               $miles_distance = $coords[3];   
-              $fly_time = number_format(($km_distance / 800),0);
-              if($fly_time < 1){
-                $fly_time = 1;
+              $minutes = $km_distance / 700 * 60;
+              $hours = 0;
+              while ($minutes > 60) {
+                $minutes = $minutes - 60;
+                $hours += 1;
               }
       ?>
                   <div class="form_container" style="    
@@ -217,28 +217,35 @@
                   Flight duration
               </label>
               <div style="width: 100%;height: 30px;border:1px solid grey; border-radius: 5px;background-color:white;padding-left:5px;">
-                <p id="flight_duration"><?= $fly_time . " h" ?></p>
+                <p id="flight_duration"><?= (int)$hours . " h " . (int)$minutes . ' min' ?></p>
               </div>
           </div>
       </div>
         <p id="from_lat" style="display:none;"><?= $from_coords[0] ?></p>
         <p id="from_lng" style="display:none;"><?= $from_coords[1] ?></p>
-        <p id="to_lat" style="display:none;"><?= $to_coords[0] ?> </p>
+        <p id="to_lat" style="display:none;"><?= $to_coords[0] ?></p>
         <p id="to_lng" style="display:none;"><?= $to_coords[1] ?></p>
       <?php
           }
           else{
               $from = CFS()->get('from');
               $to = CFS()->get('to');
-
+              if ($from == ''){
+                $from = "New York";
+              }
+              if ($to == ''){
+                $to = "London";
+              }
               $coords = map_calculator($from, $to);
               $from_coords = $coords[0];
               $to_coords = $coords[1];
               $km_distance = $coords[2];
               $miles_distance = $coords[3];   
-              $fly_time = number_format(($km_distance / 800));
-              if($fly_time < 1){
-                $fly_time = 1;
+              $minutes = $km_distance / 700 * 60;
+              $hours = 0;
+              while ($minutes > 60) {
+                $minutes = $minutes - 60;
+                $hours += 1;
               }
             ?>
           <div class="form_container" style="    
@@ -271,13 +278,13 @@
                   Flight duration
               </label>
               <div style="width: 100%;height: 30px;border:1px solid grey; border-radius: 5px;background-color:white;padding-left:5px;">
-                <p id="flight_duration"><?= $fly_time . " h" ?></p>
+                <p id="flight_duration"><?= (int)$hours . " h " . (int)$minutes . ' min' ?></p>
               </div>
           </div>
       </div>
         <p id="from_lat" style="display:none;"><?= $from_coords[0] ?></p>
         <p id="from_lng" style="display:none;"><?= $from_coords[1] ?></p>
-        <p id="to_lat" style="display:none;"><?= $to_coords[0] ?> </p>
+        <p id="to_lat" style="display:none;"><?= $to_coords[0] ?></p>
         <p id="to_lng" style="display:none;"><?= $to_coords[1] ?></p>
         <?php
           };
@@ -306,9 +313,8 @@
     const from_lng = parseFloat(document.getElementById("from_lng").innerHTML);
     const to_lat = parseFloat(document.getElementById("to_lat").innerHTML);
     const to_lng = parseFloat(document.getElementById("to_lng").innerHTML);
-
-    const from_coords = {'lat':from_lat,'lng':from_lng}
-    const to_coords = {'lat':to_lat,'lng':to_lng}
+    const from_coords = { lat: from_lat, lng: from_lng}
+    const to_coords = { lat: to_lat, lng: to_lng}
 
     deleteMarkers(markersArray);
 
@@ -329,6 +335,7 @@
         label: "D",
       }),
     );
+    
 
   }
   function deleteMarkers(markersArray) {
